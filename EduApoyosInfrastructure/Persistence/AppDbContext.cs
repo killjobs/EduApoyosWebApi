@@ -13,6 +13,7 @@ namespace EduApoyosInfrastructure.Persistence
         }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Estudiante> Estudiantes { get; set; }
+        public DbSet<UsuarioToken> UsuarioTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>(entity =>
@@ -36,6 +37,23 @@ namespace EduApoyosInfrastructure.Persistence
                 entity.Property(e => e.FechaRegistro)
                     .HasColumnType("datetime2")
                     .IsRequired();
+            });
+            modelBuilder.Entity<UsuarioToken>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.JwtId)
+                      .IsRequired()
+                      .HasMaxLength(200);
+                entity.Property(x => x.Activo)
+                      .IsRequired();
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime2");
+                entity.Property(e => e.FechaExpiracion)
+                    .HasColumnType("datetime2");
+                entity.HasOne(x => x.Usuario)
+                      .WithMany(x => x.Tokens)
+                      .HasForeignKey(x => x.UsuarioId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<Estudiante>(entity =>
             {

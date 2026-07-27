@@ -9,5 +9,6 @@
         public int Rol { get; set; }
         public DateTime FechaRegistro { get; set; }
         public Estudiante? Estudiante { get; set; }
+        public ICollection<UsuarioToken> Tokens { get; set; } = new List<UsuarioToken>();
     }
 }

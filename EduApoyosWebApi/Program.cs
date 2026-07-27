@@ -22,7 +22,12 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 });
 
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IUsuarioTokenRepository, UsuarioTokenRepository>();
 builder.Services.AddScoped<IEstudianteApplication, EstudianteApplication>();
+builder.Services.AddScoped<IAuthApplication, AuthApplication>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 var app = builder.Build();
 
