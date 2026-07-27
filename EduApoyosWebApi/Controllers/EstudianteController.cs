@@ -1,6 +1,8 @@
 ﻿using EduApoyosApplication.Implementation;
 using EduApoyosDomain.Dtos;
 using EduApoyosDomain.Entities;
+using EduApoyosDomain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduApoyosWebApi.Controllers
@@ -16,6 +18,7 @@ namespace EduApoyosWebApi.Controllers
             _estudianteApplication = estudianteApplication;
         }
 
+        [Authorize(Roles = nameof(RolUsuario.Asesor))]
         [HttpGet]
         public async Task<ActionResult<ObjectResultDto<Estudiante>>> GetEstudiantesAsync()
         {
