@@ -1,5 +1,6 @@
 ﻿using EduApoyosApplication.Implementation;
 using EduApoyosDomain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduApoyosWebApi.Controllers
@@ -14,6 +15,7 @@ namespace EduApoyosWebApi.Controllers
         {
             _authApplication = authApplication;
         }
+
         [HttpPost("login")]
         public async Task<ActionResult> LoginAsync([FromBody] LoginUsuarioDto loginUsuarioDto)
         {
