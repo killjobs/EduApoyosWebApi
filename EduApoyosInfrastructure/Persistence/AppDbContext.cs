@@ -40,6 +40,7 @@ namespace EduApoyosInfrastructure.Persistence
             });
             modelBuilder.Entity<UsuarioToken>(entity =>
             {
+                entity.ToTable("UsuariosToken");
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.JwtId)
                       .IsRequired()

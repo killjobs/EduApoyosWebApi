@@ -18,7 +18,7 @@ namespace EduApoyosInfrastructure.Repository
         }
         public async Task DesactivarTokenUsuarioAsync(Guid usuarioId)
         {
-            var tokens = await _appDbContext.UsuarioTokens.Where(t => t.UsuarioId == usuarioId && t.Activo).ToListAsync();
+            var tokens = await _appDbContext.UsuarioTokens.AsTracking().Where(t => t.UsuarioId == usuarioId && t.Activo).ToListAsync();
             foreach (var token in tokens)
             {
                 token.Activo = false;
