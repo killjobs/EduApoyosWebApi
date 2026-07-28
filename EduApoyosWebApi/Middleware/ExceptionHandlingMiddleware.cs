@@ -34,6 +34,7 @@ namespace EduApoyosWebApi.Middleware
                 DirectoryNotFoundException => HttpStatusCode.NotFound,
                 ValidationException => HttpStatusCode.BadRequest,
                 UnauthorizedAccessException => HttpStatusCode.Unauthorized,
+                InvalidOperationException => HttpStatusCode.Conflict,
                 _ => HttpStatusCode.InternalServerError
             };
 
