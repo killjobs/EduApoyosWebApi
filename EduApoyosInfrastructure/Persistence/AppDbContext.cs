@@ -14,6 +14,8 @@ namespace EduApoyosInfrastructure.Persistence
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Estudiante> Estudiantes { get; set; }
         public DbSet<UsuarioToken> UsuarioTokens { get; set; }
+        public DbSet<SolicitudApoyo> SolicitudesApoyo { get; set; }
+        public DbSet<HistorialEstado> HistorialEstados { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>(entity =>
@@ -77,7 +79,44 @@ namespace EduApoyosInfrastructure.Persistence
                 entity.HasIndex(e => e.UsuarioId)
                     .IsUnique();
             });
-
+            modelBuilder.Entity<SolicitudApoyo>(entity =>
+            {
+                entity.ToTable("SolicitudesApoyo");
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.MontoSolicitado)
+                      .HasColumnType("decimal(18,2)");
+                entity.Property(x => x.Descripcion)
+                      .HasMaxLength(1000);
+                entity.Property(x => x.FechaSolicitud)
+                      .HasColumnType("datetime2");
+                entity.Property(x => x.FechaActualizacion)
+                      .HasColumnType("datetime2");
+                entity.HasOne(x => x.Estudiante)
+                      .WithMany(x => x.Solicitudes)
+                      .HasForeignKey(x => x.EstudianteId)
+                      .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(x => x.Asesor)
+                      .WithMany(x => x.SolicitudesAsignadas)
+                      .HasForeignKey(x => x.AsesorId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<HistorialEstado>(entity =>
+            {
+                entity.ToTable("HistorialEstados");
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.Observacion)
+                      .HasMaxLength(1000);
+                entity.Property(x => x.FechaCambio)
+                      .HasColumnType("datetime2");
+                entity.HasOne(x => x.Solicitud)
+                      .WithMany(x => x.HistorialEstados)
+                      .HasForeignKey(x => x.SolicitudId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(x => x.Usuario)
+                      .WithMany(x => x.HistorialEstados)
+                      .HasForeignKey(x => x.UsuarioId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
             base.OnModelCreating(modelBuilder);
         }
     }

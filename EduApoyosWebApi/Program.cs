@@ -34,8 +34,10 @@ internal class Program
         builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
         builder.Services.AddScoped<IAuthRepository, AuthRepository>();
         builder.Services.AddScoped<IUsuarioTokenRepository, UsuarioTokenRepository>();
+        builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
         builder.Services.AddScoped<IEstudianteApplication, EstudianteApplication>();
         builder.Services.AddScoped<IAuthApplication, AuthApplication>();
+        builder.Services.AddScoped<ISolicitudApplication, SolicitudApplication>();
         builder.Services.AddScoped<IPasswordService, PasswordService>();
         builder.Services.AddScoped<IJwtService, JwtService>();
 
