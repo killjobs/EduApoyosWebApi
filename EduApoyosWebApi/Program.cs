@@ -44,6 +44,18 @@ internal class Program
         builder.Services.Configure<JwtSettings>(
             builder.Configuration.GetSection("Jwt"));
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AngularPolicy",
+                policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+        });
+
         var jwtSettings =builder.Configuration
             .GetSection("Jwt")
             .Get<JwtSettings>() ?? throw new InvalidOperationException("Configuración JWT no encontrada.");
@@ -76,6 +88,7 @@ internal class Program
         }
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseCors("AngularPolicy");
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
