@@ -1,4 +1,5 @@
 ﻿using EduApoyosCommon.Interface;
+using EduApoyosDomain.Dtos;
 using EduApoyosDomain.Entities;
 using EduApoyosInfrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,18 @@ namespace EduApoyosInfrastructure.Repository
         public async Task GuardarCambiosAsync()
         {
             await _appDbContext.SaveChangesAsync();
+        }
+        public async Task<List<EstudianteSelectDto>> GetEstudiantesForSelectAsync()
+        {
+            return await _appDbContext.Estudiantes
+                .AsNoTracking()
+                .OrderBy(x => x.NumeroDocumento)
+                .Select(x => new EstudianteSelectDto
+                {
+                    Id = x.Id,
+                    NumeroDocumento = x.NumeroDocumento
+                })
+                .ToListAsync();
         }
     }
 }

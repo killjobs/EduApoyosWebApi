@@ -25,7 +25,12 @@ namespace EduApoyosWebApi.Controllers
             var result = await _estudianteApplication.GetEstudiantesAsync(page, pageSize);
             return Ok(result);
         }
-
+        [HttpGet("GetEstudiantesForSelect")]
+        public async Task<ActionResult<ObjectResultDto<List<EstudianteSelectDto>>>> GetEstudiantesForSelectAsync()
+        {
+            var result = await _estudianteApplication.GetEstudiantesForSelectAsync();
+            return Ok(result);
+        }
         [Authorize(Roles = nameof(RolUsuario.Asesor))]
         [HttpPost]
         public async Task<ActionResult<ObjectResultDto<string>>> CrearAsync([FromBody] EstudianteDto estudianteDto)
