@@ -58,11 +58,20 @@ namespace EduApoyosInfrastructure.Repository
         }
         public async Task<SolicitudApoyo?> GetByIdHistorialAsync(Guid solicitudId)
         {
-            return await _appDbContext.SolicitudesApoyo
+            var solicitud = await _appDbContext.SolicitudesApoyo
                 .Include(x => x.Estudiante)
                 .Include(x => x.Asesor)
                 .Include(x => x.HistorialEstados)
                 .FirstOrDefaultAsync(x => x.Id == solicitudId);
+
+            if (solicitud is not null)
+            {
+                solicitud.HistorialEstados = solicitud.HistorialEstados
+                    .OrderByDescending(x => x.FechaCambio)
+                    .ToList();
+            }
+
+            return solicitud;
         }
         public async Task GuardarCambiosAsync()
         {
