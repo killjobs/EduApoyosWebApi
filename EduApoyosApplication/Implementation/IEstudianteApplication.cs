@@ -11,5 +11,6 @@ namespace EduApoyosApplication.Implementation
         Task CrearAsync(EstudianteDto estudianteDto);
         Task ActualizarAsync(EstudianteDto estudianteDto);
         Task EliminarAsync(Guid estudianteId);
+        Task<ObjectResultDto<List<EstudianteSelectDto>>> GetEstudiantesForSelectAsync();
     }
 }

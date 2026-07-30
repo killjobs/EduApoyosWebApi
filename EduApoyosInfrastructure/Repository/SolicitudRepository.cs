@@ -14,19 +14,35 @@ namespace EduApoyosInfrastructure.Repository
         {
             _appDbContext = appDbContext;
         }
-        public async Task<int> CountAsync()
+        public async Task<int> CountAsync(EstadoSolicitudEnum? estado)
         {
-            return await _appDbContext.SolicitudesApoyo.CountAsync();
+            var query = _appDbContext.SolicitudesApoyo
+                        .AsNoTracking()
+                        .AsQueryable();
+
+            if (estado.HasValue)
+            {
+                query = query.Where(x => x.Estado == estado.Value);
+            }
+            return await query.CountAsync();
         }
         public async Task CrearAsync(SolicitudApoyo solicitudApoyo)
         {
             await _appDbContext.SolicitudesApoyo.AddAsync(solicitudApoyo);
         }
-        public async Task<List<SolicitudApoyo>> GetAsync(int page, int pageSize)
+        public async Task<List<SolicitudApoyo>> GetAsync(int page, int pageSize, EstadoSolicitudEnum? estado)
         {
-            return await _appDbContext.SolicitudesApoyo
-                .AsNoTracking()
-                .Include(x => x.Estudiante)
+            var query = _appDbContext.SolicitudesApoyo
+                        .AsNoTracking()
+                        .Include(x => x.Estudiante)
+                        .AsQueryable();
+
+            if (estado.HasValue)
+            {
+                query = query.Where(x => x.Estado == estado.Value);
+            }
+
+            return await query
                 .OrderByDescending(x => x.FechaSolicitud)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -42,11 +58,20 @@ namespace EduApoyosInfrastructure.Repository
         }
         public async Task<SolicitudApoyo?> GetByIdHistorialAsync(Guid solicitudId)
         {
-            return await _appDbContext.SolicitudesApoyo
+            var solicitud = await _appDbContext.SolicitudesApoyo
                 .Include(x => x.Estudiante)
                 .Include(x => x.Asesor)
                 .Include(x => x.HistorialEstados)
                 .FirstOrDefaultAsync(x => x.Id == solicitudId);
+
+            if (solicitud is not null)
+            {
+                solicitud.HistorialEstados = solicitud.HistorialEstados
+                    .OrderByDescending(x => x.FechaCambio)
+                    .ToList();
+            }
+
+            return solicitud;
         }
         public async Task GuardarCambiosAsync()
         {

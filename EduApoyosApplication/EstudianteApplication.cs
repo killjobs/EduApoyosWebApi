@@ -99,5 +99,13 @@ namespace EduApoyosApplication
             await _estudianteRepository.EliminarAsync(estudiante);
             await _estudianteRepository.GuardarCambiosAsync();
         }
+        public async Task<ObjectResultDto<List<EstudianteSelectDto>>> GetEstudiantesForSelectAsync()
+        {
+            return new ObjectResultDto<List<EstudianteSelectDto>>
+            {
+                Data = await _estudianteRepository.GetEstudiantesForSelectAsync(),
+                Success = true
+            };
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EduApoyosDomain.Entities;
+﻿using EduApoyosDomain.Dtos;
+using EduApoyosDomain.Entities;
 
 namespace EduApoyosCommon.Interface
 {
@@ -11,5 +12,6 @@ namespace EduApoyosCommon.Interface
         Task CrearAsync(Estudiante estudiante);
         Task EliminarAsync(Estudiante estudiante);
         Task GuardarCambiosAsync();
+        Task<List<EstudianteSelectDto>> GetEstudiantesForSelectAsync();
     }
 }
