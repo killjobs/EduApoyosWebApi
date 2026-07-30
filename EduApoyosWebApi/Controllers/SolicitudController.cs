@@ -22,9 +22,9 @@ namespace EduApoyosWebApi.Controllers
 
         [Authorize(Roles = nameof(RolUsuario.Asesor))]
         [HttpGet]
-        public async Task<ActionResult<ObjectResultDto<SolicitudApoyo>>> GetSolicitudesAsync(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<ObjectResultDto<SolicitudApoyo>>> GetSolicitudesAsync(int page = 1, int pageSize = 10,EstadoSolicitudEnum? estado = null)
         {
-            var result = await _solicitudApplication.GetSolicitudesAsync(page, pageSize);
+            var result = await _solicitudApplication.GetSolicitudesAsync(page, pageSize,estado);
             return Ok(result);
         }
 

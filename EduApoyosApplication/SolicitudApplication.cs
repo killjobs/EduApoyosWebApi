@@ -14,10 +14,10 @@ namespace EduApoyosApplication
         {
             _solicitudRepository = solicitudRepository;
         }
-        public async Task<ObjectResultDto<PagedResultDto<SolicitudApoyo>>> GetSolicitudesAsync(int page, int pageSize)
+        public async Task<ObjectResultDto<PagedResultDto<SolicitudApoyo>>> GetSolicitudesAsync(int page, int pageSize, EstadoSolicitudEnum? estado)
         {
-            var solicitudes = await _solicitudRepository.GetAsync(page, pageSize);
-            var totalRecords = await _solicitudRepository.CountAsync();
+            var solicitudes = await _solicitudRepository.GetAsync(page, pageSize, estado);
+            var totalRecords = await _solicitudRepository.CountAsync(estado);
 
             var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
 
